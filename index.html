@@ -5,55 +5,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Virksomhedsportal</title>
 <style>
-html, body {
+html,body {
   height:100%;
   margin:0;
   font-family:"Segoe UI",Arial,sans-serif;
-  color:#f8fafc;
   display:flex;
   justify-content:center;
   align-items:center;
   background:linear-gradient(135deg,#0f172a,#1e293b);
+  color:#f8fafc;
 }
-body::before {
-  content:"";
-  position:fixed;
-  inset:0;
-  background:radial-gradient(circle at 20% 20%,rgba(37,99,235,0.1) 0%,transparent 50%),
-             radial-gradient(circle at 80% 80%,rgba(14,165,233,0.08) 0%,transparent 50%),
-             radial-gradient(circle at 50% 50%,rgba(2,132,199,0.05) 0%,transparent 70%);
-  z-index:0;
-}
+
 .container {
-  position: relative;
-  z-index: 1;
-  background: #1e293b;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  width: 480px;
-  max-width: 95%;
-  max-height: 90vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background:#1e293b;
+  padding:2rem;
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  width:480px;
+  max-width:95%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  position:relative;
 }
-.scroll-area {
-  overflow-y: auto;
-  width: 100%;
-  flex: 1;
-  padding-right: 8px;
-}
-input, button {
+
+.hidden { display:none; }
+input,button {
   padding:0.7rem;
   font-size:1rem;
   border-radius:8px;
   border:none;
   outline:none;
 }
-input { background:#334155; color:white; margin:0.3rem 0; }
-input::placeholder { color:#94a3b8; }
+input {
+  background:#334155;
+  color:white;
+  margin:0.3rem 0;
+  width:100%;
+  box-sizing:border-box;
+}
 button {
   background:#2563eb;
   color:white;
@@ -67,82 +57,6 @@ button:hover {
   transform:translateY(-2px);
   box-shadow:0 4px 12px rgba(37,99,235,0.4);
 }
-.hidden { display:none; width:100%; }
-.flex-row {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  width:100%;
-  margin:0.5rem 0;
-}
-.flex-row input { flex:1; margin-right:0.5rem; }
-.flex-row button { flex:0 0 100px; }
-.company {
-  background:#334155;
-  border-radius:10px;
-  padding:0.75rem;
-  margin:0.5rem 0;
-  width:100%;
-  display:flex;
-  flex-direction:column;
-}
-.company-top {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-}
-.level-container { display:flex; align-items:center; margin-top:5px; }
-.level { font-weight:bold; color:#38bdf8; margin-right:5px; }
-.emoji-btn {
-  background:none;
-  border:none;
-  font-size:1rem;
-  width:24px;
-  height:24px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  cursor:pointer;
-  margin:0 2px;
-  padding:0;
-}
-.emoji-btn:hover { transform: scale(1.2); }
-.input-row {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:5px;
-}
-.input-row input { flex:1; margin-right:5px; }
-.input-row button { flex:0 0 90px; }
-#searchInput {
-  background:#334155;
-  color:white;
-  padding:0.6rem;
-  border-radius:8px;
-  border:none;
-  margin-bottom:0.5rem;
-  width:100%;
-}
-.modal-bg {
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.6);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:2;
-}
-.modal {
-  background:#1e293b;
-  padding:1.5rem;
-  border-radius:12px;
-  width:300px;
-  text-align:center;
-}
-.modal button { width:45%; margin:0.5rem; }
-#loginError { color:#f87171; text-align:center; font-size:0.9rem; margin-top:0.5rem; }
 .logout-btn {
   position:absolute;
   top:10px;
@@ -158,80 +72,123 @@ button:hover {
   top:10px;
   left:10px;
   font-size:0.8rem;
-  color:#f8fafc;
-  background: rgba(0,0,0,0.4);
+  background:rgba(0,0,0,0.4);
   padding:0.2rem 0.5rem;
   border-radius:6px;
 }
-.fixed-controls {
-  display:flex;
-  justify-content:space-between;
+
+/* Scrollområde kun for virksomhedslisten */
+#companies {
+  max-height:350px;
+  overflow-y:auto;
   width:100%;
   margin-top:0.5rem;
+}
+#companies::-webkit-scrollbar { width:8px; }
+#companies::-webkit-scrollbar-thumb { background:#475569; border-radius:4px; }
+
+.company {
+  background:#334155;
+  border-radius:10px;
+  padding:0.75rem;
+  margin:0.5rem 0;
+}
+.company-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.level { font-weight:bold; color:#38bdf8; }
+.emoji-btn {
+  background:none;
+  border:none;
+  font-size:1rem;
+  cursor:pointer;
+  margin:0 2px;
+}
+.emoji-btn:hover { transform:scale(1.2); }
+.input-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:5px;
+}
+.input-row input { flex:1; margin-right:5px; }
+.input-row button { flex:0 0 90px; }
+
+#searchInput {
+  background:#334155;
+  color:white;
+  padding:0.6rem;
+  border-radius:8px;
+  border:none;
+  margin-bottom:0.5rem;
+  width:100%;
+}
+
+.flex-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
 }
 </style>
 </head>
 <body>
 <div id="timer"></div>
 <div class="container">
+  <button id="logoutBtn" class="logout-btn hidden">Log ud</button>
 
-<button id="logoutBtn" class="logout-btn hidden">Log ud</button>
+  <!-- Login -->
+  <div id="loginScreen">
+    <h2>Login</h2>
+    <input type="password" id="password" placeholder="Indtast adgangskode">
+    <button id="loginBtn">Login</button>
+    <p id="loginError" class="hidden">Forkert kode!</p>
+  </div>
 
-<!-- LOGIN -->
-<div id="loginScreen">
-  <h2>Login</h2>
-  <input type="password" id="password" placeholder="Indtast adgangskode">
-  <button id="loginBtn">Login</button>
-  <p id="loginError" class="hidden">Forkert kode!</p>
-</div>
+  <!-- Menu -->
+  <div id="mainMenu" class="hidden">
+    <h2>Virksomhedsportal</h2>
+    <button id="createBtn">Opret ny virksomhed</button>
+    <button id="listBtn">Eksisterende virksomheder</button>
+    <button id="adminBtn" class="hidden">Admin Kontrolpanel</button>
+  </div>
 
-<!-- MAIN MENU -->
-<div id="mainMenu" class="hidden">
-  <h2>Virksomhedsportal</h2>
-  <button id="createBtn">Opret ny virksomhed</button>
-  <button id="listBtn">Eksisterende virksomheder</button>
-  <button id="adminBtn" class="hidden">Admin Kontrolpanel</button>
-</div>
+  <!-- Opret -->
+  <div id="createCompany" class="hidden">
+    <h2>Opret virksomhed</h2>
+    <input id="companyName" placeholder="Virksomhedsnavn">
+    <input id="cvr" placeholder="CVR-nummer">
+    <input id="owner" placeholder="Ejerens navn">
+    <div class="flex-top">
+      <button id="createCompanyBtn">Opret</button>
+      <button id="backFromCreateBtn">Tilbage</button>
+    </div>
+  </div>
 
-<!-- ADMIN PANEL -->
-<div id="adminPanel" class="hidden">
-  <h2>Admin Kontrolpanel</h2>
-  <div class="flex-row">
+  <!-- Liste -->
+  <div id="companyList" class="hidden">
+    <h2>Eksisterende virksomheder</h2>
+    <input id="searchInput" placeholder="Søg efter navn, ejer eller CVR..." oninput="renderCompanies()">
+    <div class="flex-top">
+      <button id="backFromListBtn">Tilbage</button>
+      <button id="refreshListBtn">Refresh</button>
+    </div>
+    <div id="companies"></div>
+  </div>
+
+  <!-- Admin -->
+  <div id="adminPanel" class="hidden">
+    <h2>Admin Kontrolpanel</h2>
     <input type="password" id="newAdminPassword" placeholder="Nyt admin kodeord">
     <button id="changeAdminBtn">Skift Admin</button>
-  </div>
-  <div class="flex-row">
     <input type="password" id="newUserPassword" placeholder="Nyt user kodeord">
     <button id="changeUserBtn">Skift User</button>
-  </div>
-  <button id="adminBackBtn">Tilbage</button>
-</div>
-
-<!-- CREATE COMPANY -->
-<div id="createCompany" class="hidden">
-  <h2>Opret virksomhed</h2>
-  <div class="flex-row"><input id="companyName" placeholder="Virksomhedsnavn"></div>
-  <div class="flex-row"><input id="cvr" placeholder="CVR-nummer"></div>
-  <div class="flex-row"><input id="owner" placeholder="Ejerens navn"></div>
-  <div class="flex-row">
-    <button id="createCompanyBtn">Opret</button>
-    <button id="backFromCreateBtn">Tilbage</button>
+    <button id="adminBackBtn">Tilbage</button>
   </div>
 </div>
-
-<!-- COMPANY LIST -->
-<div id="companyList" class="hidden">
-  <h2>Eksisterende virksomheder</h2>
-  <input id="searchInput" placeholder="Søg efter navn, ejer eller CVR..." oninput="renderCompanies()">
-  <div class="fixed-controls">
-    <button id="backFromListBtn">Tilbage</button>
-    <button id="refreshListBtn">Refresh</button>
-  </div>
-  <div class="scroll-area" id="companies"></div>
-</div>
-
-</div>
-<div id="modalContainer" class="hidden"></div>
 
 <script>
 let ADMIN_PASS = localStorage.getItem("adminPassword") || "admin";
@@ -240,195 +197,154 @@ let currentRole = "";
 let companies = JSON.parse(localStorage.getItem("companies") || "[]");
 const LEVELS = [{name:"Bronze (20%)"},{name:"Sølv (17,5%)"},{name:"Guld (15%)"},{name:"Platin (10%)"}];
 
-// --- LOGIN SYSTEM ---
-function login() {
-  const pass = document.getElementById("password").value.trim();
-  const err = document.getElementById("loginError");
-  if (pass === ADMIN_PASS) {
-    currentRole = "admin";
-    showMainUI(true);
-  } else if (pass === USER_PASS) {
-    currentRole = "user";
-    showMainUI(false);
-  } else {
-    err.classList.remove("hidden");
-    return;
-  }
-  err.classList.add("hidden");
+// --- LOGIN ---
+function login(){
+  const pass=document.getElementById("password").value.trim();
+  const err=document.getElementById("loginError");
+  if(pass===ADMIN_PASS){ currentRole="admin"; showMain(true); err.classList.add("hidden"); }
+  else if(pass===USER_PASS){ currentRole="user"; showMain(false); err.classList.add("hidden"); }
+  else err.classList.remove("hidden");
 }
-function logout() {
-  currentRole = "";
+
+function logout(){
+  currentRole="";
   document.getElementById("loginScreen").classList.remove("hidden");
-  ["mainMenu","createCompany","companyList","adminPanel"].forEach(id=>document.getElementById(id).classList.add("hidden"));
+  hideAll(["mainMenu","createCompany","companyList","adminPanel"]);
   document.getElementById("logoutBtn").classList.add("hidden");
-  document.getElementById("password").value = "";
+  document.getElementById("password").value="";
 }
-function showMainUI(isAdmin) {
-  document.getElementById("loginScreen").classList.add("hidden");
+
+function showMain(isAdmin){
+  hideAll(["loginScreen","createCompany","companyList","adminPanel"]);
   document.getElementById("mainMenu").classList.remove("hidden");
   document.getElementById("logoutBtn").classList.remove("hidden");
-  const adminBtn = document.getElementById("adminBtn");
-  adminBtn.classList.toggle("hidden", !isAdmin);
-  if (isAdmin) {
-    adminBtn.onclick = () => showSection("adminPanel"); // <--- FIX HER
-  }
-}
-function showSection(sec) {
-  ["mainMenu","createCompany","companyList","adminPanel"].forEach(id => document.getElementById(id).classList.add("hidden"));
-  document.getElementById(sec).classList.remove("hidden");
+  const adminBtn=document.getElementById("adminBtn");
+  adminBtn.classList.toggle("hidden",!isAdmin);
 }
 
-// --- MODAL ---
-function showModal(msg, confirm=false, onConfirm=null) {
-  const modalContainer = document.getElementById("modalContainer");
-  modalContainer.innerHTML = `
-    <div class="modal-bg">
-      <div class="modal">
-        <p>${msg}</p>
-        ${confirm ? '<button id="cancelBtn">Annuller</button><button id="confirmBtn">Ja</button>' : '<button id="okBtn">OK</button>'}
+function hideAll(arr){arr.forEach(id=>document.getElementById(id).classList.add("hidden"));}
+function showSection(id){hideAll(["mainMenu","createCompany","companyList","adminPanel"]);document.getElementById(id).classList.remove("hidden");}
+
+// --- COMPANIES ---
+function renderCompanies(){
+  const cont=document.getElementById("companies");
+  const q=document.getElementById("searchInput").value.toLowerCase();
+  cont.innerHTML="";
+  companies.forEach((c,i)=>{
+    if(q && !(c.name.toLowerCase().includes(q)||c.owner.toLowerCase().includes(q)||c.cvr.toLowerCase().includes(q))) return;
+    const div=document.createElement("div");
+    div.className="company";
+    const controls=currentRole==="admin"?`
+      <button class="emoji-btn" onclick="changeLevel(${i},1)">⬆️</button>
+      <button class="emoji-btn" onclick="changeLevel(${i},-1)">⬇️</button>
+      <button style='background:#ef4444' onclick='del(${i})'>Slet</button>`:"";
+    div.innerHTML=`
+      <div class="company-top">
+        <div><strong>${c.name}</strong><br>CVR: ${c.cvr}<br>Ejer: ${c.owner}<br>Indtjening: ${c.income} DKK</div>
+        <div><span class="level">${getLevel(c)}</span>${controls}</div>
       </div>
-    </div>`;
-  modalContainer.classList.remove("hidden");
-  if (confirm) {
-    document.getElementById("cancelBtn").onclick = ()=>modalContainer.classList.add("hidden");
-    document.getElementById("confirmBtn").onclick = ()=>{ modalContainer.classList.add("hidden"); if(onConfirm) onConfirm(); };
-  } else {
-    document.getElementById("okBtn").onclick = ()=>modalContainer.classList.add("hidden");
-  }
+      <div class="input-row"><input type="number" id="income${i}" placeholder="Indtjening (DKK)">
+      <button onclick="addIncome(${i})">Tilføj</button></div>`;
+    cont.appendChild(div);
+  });
 }
 
-// --- ADMIN PASSWORD ---
-document.getElementById("changeAdminBtn").onclick = () => {
-  const val = document.getElementById("newAdminPassword").value.trim();
-  if (!val) return showModal("Indtast et gyldigt kodeord!");
-  ADMIN_PASS = val;
-  localStorage.setItem("adminPassword", ADMIN_PASS);
-  showModal("Admin kodeord ændret!");
-};
-document.getElementById("changeUserBtn").onclick = () => {
-  const val = document.getElementById("newUserPassword").value.trim();
-  if (!val) return showModal("Indtast et gyldigt kodeord!");
-  USER_PASS = val;
-  localStorage.setItem("userPassword", USER_PASS);
-  showModal("User kodeord ændret!");
-};
-
-// --- CREATE COMPANY ---
-document.getElementById("createBtn").onclick = ()=>showSection("createCompany");
-document.getElementById("createCompanyBtn").onclick = ()=>{
-  const name=document.getElementById("companyName").value.trim();
-  const cvr=document.getElementById("cvr").value.trim();
-  const owner=document.getElementById("owner").value.trim();
-  if(!name||!cvr||!owner) return showModal("Udfyld alle felter!");
-  companies.push({name,cvr,owner,income:0,manualLevel:null});
-  localStorage.setItem("companies",JSON.stringify(companies));
-  document.getElementById("companyName").value="";
-  document.getElementById("cvr").value="";
-  document.getElementById("owner").value="";
-  showModal("Virksomhed oprettet!");
-  renderCompanies();
-};
-
-// --- LIST ---
-document.getElementById("listBtn").onclick = ()=>{ showSection("companyList"); renderCompanies(); };
-document.getElementById("backFromListBtn").onclick = ()=>showSection("mainMenu");
-document.getElementById("refreshListBtn").onclick = renderCompanies;
-
-// --- ADMIN PANEL ---
-document.getElementById("adminBackBtn").onclick = ()=>showSection("mainMenu");
-
-// --- LOGOUT ---
-document.getElementById("logoutBtn").onclick = logout;
-
-// --- COMPANY FUNKTIONER ---
 function getLevel(c){
-  if(c.manualLevel!==null && c.manualLevel!==undefined) return LEVELS[c.manualLevel].name;
-  const income=c.income;
-  if(income<100000) return LEVELS[0].name;
-  if(income<250000) return LEVELS[1].name;
-  if(income<500000) return LEVELS[2].name;
+  if(c.manualLevel!=null) return LEVELS[c.manualLevel].name;
+  const inc=c.income;
+  if(inc<100000) return LEVELS[0].name;
+  if(inc<250000) return LEVELS[1].name;
+  if(inc<500000) return LEVELS[2].name;
   return LEVELS[3].name;
 }
+
 function addIncome(i){
-  const val=parseFloat(document.getElementById(`income${i}`).value);
-  if(isNaN(val)||val<=0) return showModal("Indtast et gyldigt beløb!");
-  companies[i].income+=val;
-  localStorage.setItem("companies",JSON.stringify(companies));
+  const v=parseFloat(document.getElementById(`income${i}`).value);
+  if(isNaN(v)||v<=0)return;
+  companies[i].income+=v;
+  companies[i].manualLevel=null; // <-- nulstil manuel niveau, så niveau opdateres automatisk
+  save();
   renderCompanies();
 }
+
 function changeLevel(i,d){
   if(currentRole!=="admin") return;
   const c=companies[i];
   c.manualLevel=(c.manualLevel||0)+d;
   if(c.manualLevel<0) c.manualLevel=0;
   if(c.manualLevel>3) c.manualLevel=3;
-  localStorage.setItem("companies",JSON.stringify(companies));
-  renderCompanies();
-}
-function confirmDelete(i){
-  if(currentRole!=="admin") return;
-  showModal(`Vil du slette <b>${companies[i].name}</b>?`,true,()=>{
-    companies.splice(i,1);
-    localStorage.setItem("companies",JSON.stringify(companies));
-    renderCompanies();
-  });
-}
-function renderCompanies(){
-  const container=document.getElementById("companies");
-  const query=document.getElementById("searchInput").value.toLowerCase();
-  container.innerHTML="";
-  if(companies.length===0){ container.innerHTML="<p>Ingen virksomheder.</p>"; return; }
-  companies.forEach((c,i)=>{
-    if(query && !(c.name.toLowerCase().includes(query)||c.owner.toLowerCase().includes(query)||c.cvr.toLowerCase().includes(query))) return;
-    const div=document.createElement("div");
-    div.className="company";
-    let controls="";
-    if(currentRole==="admin") controls=`<button class="emoji-btn" onclick="changeLevel(${i},1)">⬆️</button><button class="emoji-btn" onclick="changeLevel(${i},-1)">⬇️</button><button style="background:#ef4444" onclick="confirmDelete(${i})">Slet</button>`;
-    div.innerHTML=`
-      <div class="company-top">
-        <div><strong>${c.name}</strong> (CVR: ${c.cvr})<br>Ejer: ${c.owner}<br>Indtjening: ${c.income.toLocaleString()} DKK</div>
-        <div class="level-container"><span class="level">${getLevel(c)}</span>${controls}</div>
-      </div>
-      <div class="input-row">
-        <input type="number" id="income${i}" placeholder="Indtjening (DKK)">
-        <button onclick="addIncome(${i})">Tilføj</button>
-      </div>`;
-    container.appendChild(div);
-  });
+  save(); renderCompanies();
 }
 
-// --- RESET HVER MANDAG ---
+function del(i){
+  if(currentRole!=="admin") return;
+  companies.splice(i,1);
+  save();
+  renderCompanies();
+}
+
+function save(){localStorage.setItem("companies",JSON.stringify(companies));}
+
+// --- MANDAG RESET ---
 function resetIfMonday(){
-  const today=new Date();
-  const lastReset=new Date(localStorage.getItem("lastReset")||0);
-  if(today.getDay()===1 && today.toDateString()!==lastReset.toDateString()){
-    companies.forEach(c=>{ c.manualLevel=null; c.income=0; });
-    localStorage.setItem("companies",JSON.stringify(companies));
-    localStorage.setItem("lastReset",today.toDateString());
+  const t=new Date(), last=new Date(localStorage.getItem("lastReset")||0);
+  if(t.getDay()===1 && t.toDateString()!==last.toDateString()){
+    companies.forEach(c=>{c.income=0;c.manualLevel=null;});
+    save(); localStorage.setItem("lastReset",t.toDateString());
     renderCompanies();
   }
 }
-resetIfMonday();
 
 // --- TIMER ---
 function updateTimer(){
   const now=new Date();
-  const day=now.getDay();
-  const nextMonday=new Date(now);
-  nextMonday.setDate(now.getDate()+((8-day)%7));
-  nextMonday.setHours(0,1,0,0);
-  const diff=nextMonday-now;
-  const days=Math.floor(diff/1000/60/60/24);
-  const hours=Math.floor(diff/1000/60/60)%24;
-  const minutes=Math.floor(diff/1000/60)%60;
-  document.getElementById("timer").textContent=`Til næste mandag: ${days}d ${hours}h ${minutes}m`;
+  const next=new Date(now);
+  next.setDate(now.getDate()+((8-now.getDay())%7));
+  next.setHours(0,1,0,0);
+  const diff=next-now;
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor(diff/3600000)%24;
+  const m=Math.floor(diff/60000)%60;
+  document.getElementById("timer").textContent=`Til næste mandag: ${d}d ${h}h ${m}m`;
 }
+
 setInterval(updateTimer,60000);
 updateTimer();
+resetIfMonday();
 
 // --- EVENTS ---
-document.getElementById("loginBtn").onclick = login;
-document.getElementById("backFromCreateBtn").onclick = ()=>showSection("mainMenu");
+document.getElementById("loginBtn").onclick=login;
+document.getElementById("logoutBtn").onclick=logout;
+document.getElementById("createBtn").onclick=()=>showSection("createCompany");
+document.getElementById("listBtn").onclick=()=>{showSection("companyList");renderCompanies();};
+document.getElementById("backFromListBtn").onclick=()=>showSection("mainMenu");
+document.getElementById("refreshListBtn").onclick=renderCompanies;
+document.getElementById("backFromCreateBtn").onclick=()=>showSection("mainMenu");
+document.getElementById("adminBtn").onclick=()=>showSection("adminPanel");
+document.getElementById("adminBackBtn").onclick=()=>showSection("mainMenu");
+
+document.getElementById("createCompanyBtn").onclick=()=>{
+  const n=document.getElementById("companyName").value.trim();
+  const c=document.getElementById("cvr").value.trim();
+  const o=document.getElementById("owner").value.trim();
+  if(!n||!c||!o) return;
+  companies.push({name:n,cvr:c,owner:o,income:0,manualLevel:null});
+  save();
+  document.getElementById("companyName").value="";
+  document.getElementById("cvr").value="";
+  document.getElementById("owner").value="";
+  renderCompanies();
+};
+
+document.getElementById("changeAdminBtn").onclick=()=>{
+  const val=document.getElementById("newAdminPassword").value.trim();
+  if(val){ADMIN_PASS=val;localStorage.setItem("adminPassword",val);}
+};
+
+document.getElementById("changeUserBtn").onclick=()=>{
+  const val=document.getElementById("newUserPassword").value.trim();
+  if(val){USER_PASS=val;localStorage.setItem("userPassword",val);}
+};
 </script>
 </body>
 </html>
