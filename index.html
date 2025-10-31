@@ -2,242 +2,433 @@
 <html lang="da">
 <head>
 <meta charset="UTF-8">
-<title>Luxury Auto LegacyRP</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Virksomhedsportal</title>
 <style>
-body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:#121212;color:#eee;display:flex;justify-content:center;align-items:center;min-height:100vh;}
-*{box-sizing:border-box;}
-#startScreen{width:360px;background:#1f1f1f;padding:36px;border-radius:16px;box-shadow:0 6px 24px rgba(0,0,0,.6);text-align:center;}
-#startScreen input{width:100%;padding:12px;border-radius:10px;border:1px solid #333;background:#222;color:#eee;margin-top:8px;}
-#startScreen button{width:100%;margin-top:12px;padding:10px;border-radius:10px;border:none;background:#4caf50;color:#fff;cursor:pointer;font-weight:600;transition:all 0.2s ease-in-out;}
-#startScreen button:hover{background:#66bb6a;transform: translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.3);}
-#startScreen button:active{transform: translateY(0);box-shadow:0 2px 6px rgba(0,0,0,0.2);}
-#loginMsg{color:#ff7777;margin-top:8px;font-size:0.9rem;}
-#app{display:none;width:100%;height:100vh;position:relative;}
-#logoutBtn{position:absolute;top:12px;right:12px;padding:6px 10px;border-radius:8px;background:#333;border:none;color:#eee;opacity:.8;cursor:pointer;transition:all 0.2s ease-in-out;}
-#logoutBtn:hover{opacity:1;transform:translateY(-2px);}
-.container{display:flex;height:100vh;}
-.sidebar{width:280px;background:#1f1f1f;padding:20px;box-shadow:2px 0 18px rgba(0,0,0,.5);overflow:auto;}
-.sidebar button,input{display:block;width:100%;margin:6px 0;padding:10px;border-radius:10px;border:none;background:#333;color:#eee;cursor:pointer;transition:all 0.2s ease-in-out;font-weight:600;}
-.sidebar button:hover{background:#555;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.3);}
-.main{flex:1;display:flex;align-items:center;justify-content:center;}
-.card{width:420px;background:#1f1f1f;padding:28px;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.6);text-align:center;}
-input[type="text"]{width:100%;padding:12px;border-radius:10px;border:1px solid #333;background:#222;color:#fff;text-align:center;}
-ul{list-style:none;padding:0;margin:8px 0;max-height:260px;overflow:auto;}
-li{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:#2b2b2b;margin-bottom:6px;font-family:monospace;}
-li.accepted{background:#264b27;color:#c8ffc8;}
-.status{margin-top:12px;font-weight:600;}
-.delete-btn{background:#c62828;border:none;color:#fff;padding:6px 8px;border-radius:6px;cursor:pointer;transition:all 0.2s ease-in-out;}
-.delete-btn:hover{background:#e53935;transform:translateY(-2px);}
-button#gen1, button#gen10{background:#2196f3;}
-button#gen1:hover, button#gen10:hover{background:#42a5f5;}
-#savePassBtn{background:#555;transition:all 0.2s ease-in-out;}
-#savePassBtn.active{background:#4caf50;}
-#checkBtn{width:100%;padding:12px;border-radius:10px;background:#2196f3;color:#fff;font-weight:600;transition:all 0.2s ease-in-out;}
-#checkBtn:hover{background:#42a5f5;transform:translateY(-2px);}
-#refreshBtn{width:100%;padding:12px;border-radius:10px;background:#9e9e9e;color:#fff;margin-top:8px;cursor:pointer;font-weight:600;transition:all 0.2s ease-in-out;}
-#refreshBtn:hover{background:#bdbdbd;transform:translateY(-2px);}
-#modalBg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;}
-#modalBg div{background:#1f1f1f;padding:18px;border-radius:12px;color:#fff;width:320px;text-align:center;}
-#modalBg button{margin-top:8px;padding:8px 12px;border-radius:8px;cursor:pointer;}
-#modalConfirm{background:#c62828;color:#fff;border:none;}
-#modalCancel{background:#444;color:#fff;border:none;}
+html, body {
+  height:100%;
+  margin:0;
+  font-family:"Segoe UI",Arial,sans-serif;
+  color:#f8fafc;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#0f172a,#1e293b);
+}
+body::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at 20% 20%,rgba(37,99,235,0.1) 0%,transparent 50%),
+             radial-gradient(circle at 80% 80%,rgba(14,165,233,0.08) 0%,transparent 50%),
+             radial-gradient(circle at 50% 50%,rgba(2,132,199,0.05) 0%,transparent 70%);
+  z-index:0;
+}
+.container {
+  position: relative;
+  z-index: 1;
+  background: #1e293b;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  width: 480px;
+  max-width: 95%;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.scroll-area {
+  overflow-y: auto;
+  width: 100%;
+  flex: 1;
+  padding-right: 8px;
+}
+input, button {
+  padding:0.7rem;
+  font-size:1rem;
+  border-radius:8px;
+  border:none;
+  outline:none;
+}
+input { background:#334155; color:white; margin:0.3rem 0; }
+input::placeholder { color:#94a3b8; }
+button {
+  background:#2563eb;
+  color:white;
+  cursor:pointer;
+  font-weight:600;
+  margin:0.3rem 0;
+  transition:0.2s;
+}
+button:hover {
+  background:#1d4ed8;
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(37,99,235,0.4);
+}
+.hidden { display:none; width:100%; }
+.flex-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
+  margin:0.5rem 0;
+}
+.flex-row input { flex:1; margin-right:0.5rem; }
+.flex-row button { flex:0 0 100px; }
+.company {
+  background:#334155;
+  border-radius:10px;
+  padding:0.75rem;
+  margin:0.5rem 0;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+}
+.company-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.level-container { display:flex; align-items:center; margin-top:5px; }
+.level { font-weight:bold; color:#38bdf8; margin-right:5px; }
+.emoji-btn {
+  background:none;
+  border:none;
+  font-size:1rem;
+  width:24px;
+  height:24px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+  margin:0 2px;
+  padding:0;
+}
+.emoji-btn:hover { transform: scale(1.2); }
+.input-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:5px;
+}
+.input-row input { flex:1; margin-right:5px; }
+.input-row button { flex:0 0 90px; }
+#searchInput {
+  background:#334155;
+  color:white;
+  padding:0.6rem;
+  border-radius:8px;
+  border:none;
+  margin-bottom:0.5rem;
+  width:100%;
+}
+.modal-bg {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:2;
+}
+.modal {
+  background:#1e293b;
+  padding:1.5rem;
+  border-radius:12px;
+  width:300px;
+  text-align:center;
+}
+.modal button { width:45%; margin:0.5rem; }
+#loginError { color:#f87171; text-align:center; font-size:0.9rem; margin-top:0.5rem; }
+.logout-btn {
+  position:absolute;
+  top:10px;
+  right:10px;
+  background:#ef4444;
+  font-size:0.8rem;
+  padding:0.3rem 0.6rem;
+  border-radius:6px;
+}
+.logout-btn:hover { background:#dc2626; }
+#timer {
+  position:absolute;
+  top:10px;
+  left:10px;
+  font-size:0.8rem;
+  color:#f8fafc;
+  background: rgba(0,0,0,0.4);
+  padding:0.2rem 0.5rem;
+  border-radius:6px;
+}
+.fixed-controls {
+  display:flex;
+  justify-content:space-between;
+  width:100%;
+  margin-top:0.5rem;
+}
 </style>
 </head>
 <body>
-
-<div id="startScreen">
-<h1>Luxury Auto LegacyRP</h1>
-<input id="loginInput" type="password" placeholder="Indtast kodeord (user / admin)" />
-<button id="loginBtn">Login</button>
-<div id="loginMsg"></div>
-</div>
-
-<div id="app">
-<button id="logoutBtn">Log ud</button>
+<div id="timer"></div>
 <div class="container">
-<aside class="sidebar">
-<strong>Menu</strong>
-<button id="gen1">Generer kode</button>
-<button id="gen10">Generer 10 koder</button>
-<hr style="border:none;height:1px;background:#2a2a2a;margin:8px 0">
-<h4>Genererede koder</h4>
-<ul id="codeList"></ul>
-<h4>Accepterede koder</h4>
-<ul id="acceptedList"></ul>
-<div id="passwordSection" style="display:none;margin-top:12px">
-<h4>Skift adgangskoder (admin)</h4>
-<input id="newUserPass" placeholder="Ny user kode" />
-<input id="newAdminPass" placeholder="Ny admin kode" />
-<button id="savePassBtn">Gem koder</button>
-</div>
-</aside>
-<main class="main">
-<div class="card">
-<h2>Tjek en kode</h2>
-<input id="inputCode" type="text" placeholder="Indtast kode" />
-<button id="checkBtn">Tjek kode</button>
-<button id="refreshBtn">Refresh</button>
-<div id="status" class="status"></div>
-</div>
-</main>
-</div>
+
+<button id="logoutBtn" class="logout-btn hidden">Log ud</button>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <h2>Login</h2>
+  <input type="password" id="password" placeholder="Indtast adgangskode">
+  <button id="loginBtn">Login</button>
+  <p id="loginError" class="hidden">Forkert kode!</p>
 </div>
 
-<div id="modalBg">
-<div>
-<div id="modalText">Er du sikker?</div>
-<div style="margin-top:12px">
-<button id="modalConfirm">Slet</button>
-<button id="modalCancel">Annuller</button>
-</div>
-</div>
+<!-- MAIN MENU -->
+<div id="mainMenu" class="hidden">
+  <h2>Virksomhedsportal</h2>
+  <button id="createBtn">Opret ny virksomhed</button>
+  <button id="listBtn">Eksisterende virksomheder</button>
+  <button id="adminBtn" class="hidden">Admin Kontrolpanel</button>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+<!-- ADMIN PANEL -->
+<div id="adminPanel" class="hidden">
+  <h2>Admin Kontrolpanel</h2>
+  <div class="flex-row">
+    <input type="password" id="newAdminPassword" placeholder="Nyt admin kodeord">
+    <button id="changeAdminBtn">Skift Admin</button>
+  </div>
+  <div class="flex-row">
+    <input type="password" id="newUserPassword" placeholder="Nyt user kodeord">
+    <button id="changeUserBtn">Skift User</button>
+  </div>
+  <button id="adminBackBtn">Tilbage</button>
+</div>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCty24wq93pwk09219HyvJiEjZr-c5sXQ4",
-  authDomain: "legacyrp-88309.firebaseapp.com",
-  projectId: "legacyrp-88309",
-  storageBucket: "legacyrp-88309.appspot.com",
-  messagingSenderId: "1020527070649",
-  appId: "1:1020527070649:web:4d9e9b8b858ba4e5f83a68",
-  measurementId: "G-TNKT0K0FBB"
-};
+<!-- CREATE COMPANY -->
+<div id="createCompany" class="hidden">
+  <h2>Opret virksomhed</h2>
+  <div class="flex-row"><input id="companyName" placeholder="Virksomhedsnavn"></div>
+  <div class="flex-row"><input id="cvr" placeholder="CVR-nummer"></div>
+  <div class="flex-row"><input id="owner" placeholder="Ejerens navn"></div>
+  <div class="flex-row">
+    <button id="createCompanyBtn">Opret</button>
+    <button id="backFromCreateBtn">Tilbage</button>
+  </div>
+</div>
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const stateDocRef = doc(db,"appState","state");
+<!-- COMPANY LIST -->
+<div id="companyList" class="hidden">
+  <h2>Eksisterende virksomheder</h2>
+  <input id="searchInput" placeholder="Søg efter navn, ejer eller CVR..." oninput="renderCompanies()">
+  <div class="fixed-controls">
+    <button id="backFromListBtn">Tilbage</button>
+    <button id="refreshListBtn">Refresh</button>
+  </div>
+  <div class="scroll-area" id="companies"></div>
+</div>
 
-let state = { codes: [], acceptedCodes: [], passwords: { user: "user", admin: "admin" } };
-let isAdmin=false;
-let deleteTarget=null;
+</div>
+<div id="modalContainer" class="hidden"></div>
 
-const startScreen=document.getElementById("startScreen");
-const appDiv=document.getElementById("app");
-const loginInput=document.getElementById("loginInput");
-const loginMsg=document.getElementById("loginMsg");
-const passwordSection=document.getElementById("passwordSection");
-const codeList=document.getElementById("codeList");
-const acceptedList=document.getElementById("acceptedList");
-const inputCode=document.getElementById("inputCode");
-const statusDiv=document.getElementById("status");
-const newUserPass=document.getElementById("newUserPass");
-const newAdminPass=document.getElementById("newAdminPass");
-const gen1=document.getElementById("gen1");
-const gen10=document.getElementById("gen10");
-const checkBtn=document.getElementById("checkBtn");
-const savePassBtn=document.getElementById("savePassBtn");
-const logoutBtn=document.getElementById("logoutBtn");
-const refreshBtn=document.getElementById("refreshBtn");
-const modalBg=document.getElementById("modalBg");
-const modalConfirm=document.getElementById("modalConfirm");
-const modalCancel=document.getElementById("modalCancel");
+<script>
+let ADMIN_PASS = localStorage.getItem("adminPassword") || "admin";
+let USER_PASS = localStorage.getItem("userPassword") || "user";
+let currentRole = "";
+let companies = JSON.parse(localStorage.getItem("companies") || "[]");
+const LEVELS = [{name:"Bronze (20%)"},{name:"Sølv (17,5%)"},{name:"Guld (15%)"},{name:"Platin (10%)"}];
 
-async function loadState(){
-  const snap=await getDoc(stateDocRef);
-  if(!snap.exists()){
-    await setDoc(stateDocRef,state);
-  } else state = snap.data();
-}
-async function saveState(){ await setDoc(stateDocRef,state,{merge:true}); }
-
-document.getElementById("loginBtn").addEventListener("click", async()=>{
-  await loadState();
-  const val=loginInput.value.trim();
-  if(val===state.passwords.user){ isAdmin=false; showApp(); }
-  else if(val===state.passwords.admin){ isAdmin=true; showApp(); }
-  else loginMsg.innerText="Forkert kodeord!";
-});
-
-function showApp(){
-  startScreen.style.display="none";
-  appDiv.style.display="block";
-  passwordSection.style.display=isAdmin?"block":"none";
-  renderLists();
-}
-
-logoutBtn.addEventListener("click", ()=>{
-  appDiv.style.display="none";
-  startScreen.style.display="block";
-  loginInput.value=""; loginMsg.innerText=""; statusDiv.innerText="";
-});
-
-function randomCode(){ const chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; let c=""; for(let i=0;i<5;i++) c+=chars.charAt(Math.floor(Math.random()*chars.length)); return c; }
-async function generateCodes(count){
-  for(let i=0;i<count;i++) state.codes.push({code:randomCode(),active:false,accepted:false});
-  await saveState(); await loadState(); renderLists();
-}
-gen1.addEventListener("click",()=>generateCodes(1));
-gen10.addEventListener("click",()=>generateCodes(10));
-
-async function toggleActive(index){ state.codes[index].active=!state.codes[index].active; await saveState(); await loadState(); renderLists(); }
-
-checkBtn.addEventListener("click", async()=>{
-  const code=inputCode.value.trim().toUpperCase();
-  const fIndex=state.codes.findIndex(c=>c.code===code && c.active && !c.accepted);
-  if(fIndex>=0){
-    const found=state.codes.splice(fIndex,1)[0]; found.accepted=true; state.acceptedCodes.push(found);
-    await saveState(); await loadState(); renderLists();
-    statusDiv.innerText="✅ Accepteret"; statusDiv.className="status accepted";
-  } else { statusDiv.innerText="❌ Afvist"; statusDiv.className="status"; }
-  inputCode.value="";
-});
-
-refreshBtn.addEventListener("click", async () => {
-  await loadState();
-  renderLists();
-  statusDiv.innerText = "✅ Koder opdateret";
-});
-
-function renderLists(){
-  codeList.innerHTML=""; acceptedList.innerHTML="";
-  state.codes.forEach((c,i)=>{
-    const li=document.createElement("li");
-    li.innerHTML=`<span>${c.code}</span><div style="display:flex;gap:8px;align-items:center"><input type="checkbox" ${c.active?"checked":""}>${isAdmin?'<button class="delete-btn">X</button>':''}</div>`;
-    li.querySelector("input[type=checkbox]").addEventListener("change",()=>toggleActive(i));
-    if(isAdmin) li.querySelector(".delete-btn").addEventListener("click",()=>confirmDelete('code',i));
-    codeList.appendChild(li);
-  });
-  state.acceptedCodes.forEach((c,i)=>{
-    const li=document.createElement("li"); li.className="accepted";
-    li.innerHTML=`${c.code}${isAdmin?'<button class="delete-btn">X</button>':''}`;
-    if(isAdmin) li.querySelector(".delete-btn").addEventListener("click",()=>confirmDelete('accepted',i));
-    acceptedList.appendChild(li);
-  });
-}
-
-function confirmDelete(type,index){ deleteTarget={type,index}; modalBg.style.display="flex"; }
-modalCancel.addEventListener("click",()=>{ modalBg.style.display="none"; deleteTarget=null; });
-modalConfirm.addEventListener("click", async()=>{
-  if(!deleteTarget) return;
-  if(deleteTarget.type==="code") state.codes.splice(deleteTarget.index,1);
-  else state.acceptedCodes.splice(deleteTarget.index,1);
-  await saveState(); await loadState(); renderLists();
-  modalBg.style.display="none"; deleteTarget=null;
-});
-
-savePassBtn.addEventListener("click", async()=>{
-  if(!isAdmin) return alert("Kun admin kan ændre kodeord.");
-  if(newUserPass.value.trim()) state.passwords.user=newUserPass.value.trim();
-  if(newAdminPass.value.trim()) state.passwords.admin=newAdminPass.value.trim();
-  await saveState(); await loadState();
-  alert("Adgangskoder opdateret"); newUserPass.value=""; newAdminPass.value="";
-  updateSaveBtnState();
-});
-
-function updateSaveBtnState(){
-  if(newUserPass.value.trim() || newAdminPass.value.trim()){
-    savePassBtn.classList.add("active");
+// --- LOGIN SYSTEM ---
+function login() {
+  const pass = document.getElementById("password").value.trim();
+  const err = document.getElementById("loginError");
+  if (pass === ADMIN_PASS) {
+    currentRole = "admin";
+    showMainUI(true);
+  } else if (pass === USER_PASS) {
+    currentRole = "user";
+    showMainUI(false);
   } else {
-    savePassBtn.classList.remove("active");
+    err.classList.remove("hidden");
+    return;
+  }
+  err.classList.add("hidden");
+}
+function logout() {
+  currentRole = "";
+  document.getElementById("loginScreen").classList.remove("hidden");
+  ["mainMenu","createCompany","companyList","adminPanel"].forEach(id=>document.getElementById(id).classList.add("hidden"));
+  document.getElementById("logoutBtn").classList.add("hidden");
+  document.getElementById("password").value = "";
+}
+function showMainUI(isAdmin) {
+  document.getElementById("loginScreen").classList.add("hidden");
+  document.getElementById("mainMenu").classList.remove("hidden");
+  document.getElementById("logoutBtn").classList.remove("hidden");
+  const adminBtn = document.getElementById("adminBtn");
+  adminBtn.classList.toggle("hidden", !isAdmin);
+  if (isAdmin) {
+    adminBtn.onclick = () => showSection("adminPanel"); // <--- FIX HER
   }
 }
-newUserPass.addEventListener("input", updateSaveBtnState);
-newAdminPass.addEventListener("input", updateSaveBtnState);
+function showSection(sec) {
+  ["mainMenu","createCompany","companyList","adminPanel"].forEach(id => document.getElementById(id).classList.add("hidden"));
+  document.getElementById(sec).classList.remove("hidden");
+}
+
+// --- MODAL ---
+function showModal(msg, confirm=false, onConfirm=null) {
+  const modalContainer = document.getElementById("modalContainer");
+  modalContainer.innerHTML = `
+    <div class="modal-bg">
+      <div class="modal">
+        <p>${msg}</p>
+        ${confirm ? '<button id="cancelBtn">Annuller</button><button id="confirmBtn">Ja</button>' : '<button id="okBtn">OK</button>'}
+      </div>
+    </div>`;
+  modalContainer.classList.remove("hidden");
+  if (confirm) {
+    document.getElementById("cancelBtn").onclick = ()=>modalContainer.classList.add("hidden");
+    document.getElementById("confirmBtn").onclick = ()=>{ modalContainer.classList.add("hidden"); if(onConfirm) onConfirm(); };
+  } else {
+    document.getElementById("okBtn").onclick = ()=>modalContainer.classList.add("hidden");
+  }
+}
+
+// --- ADMIN PASSWORD ---
+document.getElementById("changeAdminBtn").onclick = () => {
+  const val = document.getElementById("newAdminPassword").value.trim();
+  if (!val) return showModal("Indtast et gyldigt kodeord!");
+  ADMIN_PASS = val;
+  localStorage.setItem("adminPassword", ADMIN_PASS);
+  showModal("Admin kodeord ændret!");
+};
+document.getElementById("changeUserBtn").onclick = () => {
+  const val = document.getElementById("newUserPassword").value.trim();
+  if (!val) return showModal("Indtast et gyldigt kodeord!");
+  USER_PASS = val;
+  localStorage.setItem("userPassword", USER_PASS);
+  showModal("User kodeord ændret!");
+};
+
+// --- CREATE COMPANY ---
+document.getElementById("createBtn").onclick = ()=>showSection("createCompany");
+document.getElementById("createCompanyBtn").onclick = ()=>{
+  const name=document.getElementById("companyName").value.trim();
+  const cvr=document.getElementById("cvr").value.trim();
+  const owner=document.getElementById("owner").value.trim();
+  if(!name||!cvr||!owner) return showModal("Udfyld alle felter!");
+  companies.push({name,cvr,owner,income:0,manualLevel:null});
+  localStorage.setItem("companies",JSON.stringify(companies));
+  document.getElementById("companyName").value="";
+  document.getElementById("cvr").value="";
+  document.getElementById("owner").value="";
+  showModal("Virksomhed oprettet!");
+  renderCompanies();
+};
+
+// --- LIST ---
+document.getElementById("listBtn").onclick = ()=>{ showSection("companyList"); renderCompanies(); };
+document.getElementById("backFromListBtn").onclick = ()=>showSection("mainMenu");
+document.getElementById("refreshListBtn").onclick = renderCompanies;
+
+// --- ADMIN PANEL ---
+document.getElementById("adminBackBtn").onclick = ()=>showSection("mainMenu");
+
+// --- LOGOUT ---
+document.getElementById("logoutBtn").onclick = logout;
+
+// --- COMPANY FUNKTIONER ---
+function getLevel(c){
+  if(c.manualLevel!==null && c.manualLevel!==undefined) return LEVELS[c.manualLevel].name;
+  const income=c.income;
+  if(income<100000) return LEVELS[0].name;
+  if(income<250000) return LEVELS[1].name;
+  if(income<500000) return LEVELS[2].name;
+  return LEVELS[3].name;
+}
+function addIncome(i){
+  const val=parseFloat(document.getElementById(`income${i}`).value);
+  if(isNaN(val)||val<=0) return showModal("Indtast et gyldigt beløb!");
+  companies[i].income+=val;
+  localStorage.setItem("companies",JSON.stringify(companies));
+  renderCompanies();
+}
+function changeLevel(i,d){
+  if(currentRole!=="admin") return;
+  const c=companies[i];
+  c.manualLevel=(c.manualLevel||0)+d;
+  if(c.manualLevel<0) c.manualLevel=0;
+  if(c.manualLevel>3) c.manualLevel=3;
+  localStorage.setItem("companies",JSON.stringify(companies));
+  renderCompanies();
+}
+function confirmDelete(i){
+  if(currentRole!=="admin") return;
+  showModal(`Vil du slette <b>${companies[i].name}</b>?`,true,()=>{
+    companies.splice(i,1);
+    localStorage.setItem("companies",JSON.stringify(companies));
+    renderCompanies();
+  });
+}
+function renderCompanies(){
+  const container=document.getElementById("companies");
+  const query=document.getElementById("searchInput").value.toLowerCase();
+  container.innerHTML="";
+  if(companies.length===0){ container.innerHTML="<p>Ingen virksomheder.</p>"; return; }
+  companies.forEach((c,i)=>{
+    if(query && !(c.name.toLowerCase().includes(query)||c.owner.toLowerCase().includes(query)||c.cvr.toLowerCase().includes(query))) return;
+    const div=document.createElement("div");
+    div.className="company";
+    let controls="";
+    if(currentRole==="admin") controls=`<button class="emoji-btn" onclick="changeLevel(${i},1)">⬆️</button><button class="emoji-btn" onclick="changeLevel(${i},-1)">⬇️</button><button style="background:#ef4444" onclick="confirmDelete(${i})">Slet</button>`;
+    div.innerHTML=`
+      <div class="company-top">
+        <div><strong>${c.name}</strong> (CVR: ${c.cvr})<br>Ejer: ${c.owner}<br>Indtjening: ${c.income.toLocaleString()} DKK</div>
+        <div class="level-container"><span class="level">${getLevel(c)}</span>${controls}</div>
+      </div>
+      <div class="input-row">
+        <input type="number" id="income${i}" placeholder="Indtjening (DKK)">
+        <button onclick="addIncome(${i})">Tilføj</button>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+// --- RESET HVER MANDAG ---
+function resetIfMonday(){
+  const today=new Date();
+  const lastReset=new Date(localStorage.getItem("lastReset")||0);
+  if(today.getDay()===1 && today.toDateString()!==lastReset.toDateString()){
+    companies.forEach(c=>{ c.manualLevel=null; c.income=0; });
+    localStorage.setItem("companies",JSON.stringify(companies));
+    localStorage.setItem("lastReset",today.toDateString());
+    renderCompanies();
+  }
+}
+resetIfMonday();
+
+// --- TIMER ---
+function updateTimer(){
+  const now=new Date();
+  const day=now.getDay();
+  const nextMonday=new Date(now);
+  nextMonday.setDate(now.getDate()+((8-day)%7));
+  nextMonday.setHours(0,1,0,0);
+  const diff=nextMonday-now;
+  const days=Math.floor(diff/1000/60/60/24);
+  const hours=Math.floor(diff/1000/60/60)%24;
+  const minutes=Math.floor(diff/1000/60)%60;
+  document.getElementById("timer").textContent=`Til næste mandag: ${days}d ${hours}h ${minutes}m`;
+}
+setInterval(updateTimer,60000);
+updateTimer();
+
+// --- EVENTS ---
+document.getElementById("loginBtn").onclick = login;
+document.getElementById("backFromCreateBtn").onclick = ()=>showSection("mainMenu");
 </script>
 </body>
 </html>
