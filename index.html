@@ -6,46 +6,111 @@
 <title>Virksomhedsportal</title>
 <style>
 html,body {
-  height:100%; margin:0;
+  height:100%;
+  margin:0;
   font-family:"Segoe UI",Arial,sans-serif;
-  display:flex; justify-content:center; align-items:center;
-  background:linear-gradient(135deg,#0f172a,#1e293b); color:#f8fafc;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#0f172a,#1e293b);
+  color:#f8fafc;
 }
 .container {
-  background:#1e293b; padding:2rem; border-radius:16px;
+  background:#1e293b;
+  padding:2rem;
+  border-radius:16px;
   box-shadow:0 10px 30px rgba(0,0,0,0.5);
-  width:480px; max-width:95%;
-  display:flex; flex-direction:column; align-items:center;
+  width:480px;
+  max-width:95%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
   position:relative;
 }
 .hidden { display:none; }
-input,button { padding:0.7rem; font-size:1rem; border-radius:8px; border:none; outline:none; }
-input { background:#334155; color:white; margin:0.3rem 0; width:100%; box-sizing:border-box; }
-button { background:#2563eb; color:white; cursor:pointer; font-weight:600; margin:0.3rem 0; transition:0.2s; }
-button:hover { background:#1d4ed8; transform:translateY(-2px); box-shadow:0 4px 12px rgba(37,99,235,0.4); }
-.logout-btn { position:absolute; top:10px; right:10px; background:#ef4444; font-size:0.8rem; padding:0.3rem 0.6rem; border-radius:6px; }
+input,button {
+  padding:0.7rem;
+  font-size:1rem;
+  border-radius:8px;
+  border:none;
+  outline:none;
+}
+input {
+  background:#334155;
+  color:white;
+  margin:0.3rem 0;
+  width:100%;
+  box-sizing:border-box;
+}
+button {
+  background:#2563eb;
+  color:white;
+  cursor:pointer;
+  font-weight:600;
+  margin:0.3rem 0;
+  transition:0.2s;
+}
+button:hover {
+  background:#1d4ed8;
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(37,99,235,0.4);
+}
+.logout-btn {
+  position:absolute;
+  top:10px;
+  right:10px;
+  background:#ef4444;
+  font-size:0.8rem;
+  padding:0.3rem 0.6rem;
+  border-radius:6px;
+}
 .logout-btn:hover { background:#dc2626; }
-#timer { position:absolute; top:10px; left:10px; font-size:0.8rem; background:rgba(0,0,0,0.4); padding:0.2rem 0.5rem; border-radius:6px; }
-
-#companies { max-height:350px; overflow-y:auto; width:100%; margin-top:0.5rem; }
+#timer {
+  position:absolute;
+  top:10px;
+  left:10px;
+  font-size:0.8rem;
+  background:rgba(0,0,0,0.4);
+  padding:0.2rem 0.5rem;
+  border-radius:6px;
+}
+#companies {
+  max-height:350px;
+  overflow-y:auto;
+  width:100%;
+  margin-top:0.5rem;
+}
 #companies::-webkit-scrollbar { width:8px; }
 #companies::-webkit-scrollbar-thumb { background:#475569; border-radius:4px; }
-
-.company { background:#334155; border-radius:10px; padding:0.75rem; margin:0.5rem 0; }
-.company-top { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; }
+.company {
+  background:#334155;
+  border-radius:10px;
+  padding:0.75rem;
+  margin:0.5rem 0;
+}
+.company-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+}
 .level { font-weight:bold; color:#38bdf8; }
 .emoji-btn { background:none; border:none; font-size:1rem; cursor:pointer; margin:0 2px; }
 .emoji-btn:hover { transform:scale(1.2); }
 .input-row { display:flex; justify-content:space-between; align-items:center; margin-top:5px; }
 .input-row input { flex:1; margin-right:5px; }
 .input-row button { flex:0 0 90px; }
-
-#searchInput { background:#334155; color:white; padding:0.6rem; border-radius:8px; border:none; margin-bottom:0.5rem; width:100%; }
+#searchInput {
+  background:#334155;
+  color:white;
+  padding:0.6rem;
+  border-radius:8px;
+  border:none;
+  margin-bottom:0.5rem;
+  width:100%;
+}
 .flex-top { display:flex; justify-content:space-between; align-items:center; width:100%; }
 </style>
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 <div id="timer"></div>
@@ -102,8 +167,11 @@ button:hover { background:#1d4ed8; transform:translateY(-2px); box-shadow:0 4px 
   </div>
 </div>
 
-<script>
-// --- Firebase config ---
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.24.0/firebase-app.js";
+import { getFirestore, collection, doc, setDoc, getDocs, onSnapshot, deleteDoc, updateDoc, query, limit } from "https://www.gstatic.com/firebasejs/9.24.0/firebase-firestore.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyCsMKaGW_8LN3BTTtmmslSJdGZngzFJcQw",
   authDomain: "legacydgrevision.firebaseapp.com",
@@ -112,121 +180,149 @@ const firebaseConfig = {
   messagingSenderId: "1091128393651",
   appId: "1:1091128393651:web:59e6a8644d40f8576b15c6"
 };
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const companiesCol = db.collection("companies");
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 let ADMIN_PASS = localStorage.getItem("adminPassword") || "admin";
 let USER_PASS = localStorage.getItem("userPassword") || "user";
 let currentRole = "";
 let companies = [];
 const LEVELS = [{name:"Bronze (20%)"},{name:"Sølv (17,5%)"},{name:"Guld (15%)"},{name:"Platin (10%)"}];
+let adminId = null;
 
-// --- LOGIN ---
-function login(){
+// --- LOGIN / LOGOUT ---
+const onlineAdminsRef = collection(db,"appState","state","onlineAdmins");
+
+async function login(){
   const pass=document.getElementById("password").value.trim();
   const err=document.getElementById("loginError");
-  if(pass===ADMIN_PASS){ currentRole="admin"; showMain(true); err.classList.add("hidden"); }
-  else if(pass===USER_PASS){ currentRole="user"; showMain(false); err.classList.add("hidden"); }
+
+  if(pass===ADMIN_PASS){
+    // tjek maks 5 admins
+    const snapshot = await getDocs(onlineAdminsRef);
+    if(snapshot.size >=5){ err.textContent="Maks antal admins online nået!"; err.classList.remove("hidden"); return;}
+    adminId = crypto.randomUUID();
+    await setDoc(doc(onlineAdminsRef,adminId),{loginTime: new Date()});
+    currentRole="admin";
+    showMain(true);
+    err.classList.add("hidden");
+  }
+  else if(pass===USER_PASS){
+    currentRole="user";
+    showMain(true);
+    err.classList.add("hidden");
+  }
   else err.classList.remove("hidden");
 }
-function logout(){
+
+async function logout(){
+  if(currentRole==="admin" && adminId){
+    await deleteDoc(doc(onlineAdminsRef,adminId));
+  }
   currentRole="";
   document.getElementById("loginScreen").classList.remove("hidden");
   hideAll(["mainMenu","createCompany","companyList","adminPanel"]);
   document.getElementById("logoutBtn").classList.add("hidden");
   document.getElementById("password").value="";
 }
+
+// --- UI ---
 function showMain(isAdmin){
   hideAll(["loginScreen","createCompany","companyList","adminPanel"]);
   document.getElementById("mainMenu").classList.remove("hidden");
   document.getElementById("logoutBtn").classList.remove("hidden");
   document.getElementById("adminBtn").classList.toggle("hidden",!isAdmin);
 }
+
 function hideAll(arr){ arr.forEach(id=>document.getElementById(id).classList.add("hidden")); }
 function showSection(id){ hideAll(["mainMenu","createCompany","companyList","adminPanel"]); document.getElementById(id).classList.remove("hidden"); }
 
-// --- CRUD via Firebase ---
+// --- COMPANIES ---
+const companiesRef = collection(db,"companies");
+
+async function fetchCompanies(){
+  onSnapshot(companiesRef, snapshot => {
+    companies = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+    renderCompanies();
+  });
+}
+
 function renderCompanies(){
-  const cont=document.getElementById("companies");
-  const q=document.getElementById("searchInput").value.toLowerCase();
+  const cont = document.getElementById("companies");
+  const q = document.getElementById("searchInput").value.toLowerCase();
   cont.innerHTML="";
-  companies.forEach((c)=>{
-    if(q && !(c.name.toLowerCase().includes(q) || c.owner.toLowerCase().includes(q) || c.cvr.toLowerCase().includes(q))) return;
+  companies.forEach((c,i)=>{
+    if(q && !(c.name.toLowerCase().includes(q)||c.owner.toLowerCase().includes(q)||c.cvr.toLowerCase().includes(q))) return;
     const div=document.createElement("div");
     div.className="company";
-    const controls=currentRole==="admin"?`
+    const controls = `
       <button class="emoji-btn" onclick="changeLevel('${c.id}',1)">⬆️</button>
       <button class="emoji-btn" onclick="changeLevel('${c.id}',-1)">⬇️</button>
-      <button style='background:#ef4444' onclick='del("${c.id}")'>Slet</button>`:"";
-    div.innerHTML=`
+      <button style='background:#ef4444' onclick='delCompany("${c.id}")'>Slet</button>`;
+    div.innerHTML = `
       <div class="company-top">
-        <div><strong>${c.name}</strong><br>CVR: ${c.cvr}<br>Ejer: ${c.owner}<br>Indtjening: ${c.income} DKK</div>
+        <div><strong>${c.name}</strong><br>CVR: ${c.cvr}<br>Ejer: ${c.owner}<br>Indtjening: ${c.income||0} DKK</div>
         <div><span class="level">${getLevel(c)}</span>${controls}</div>
       </div>
-      <div class="input-row">
-        <input type="number" id="income${c.id}" placeholder="Indtjening (DKK)">
-        <button onclick="addIncome('${c.id}')">Tilføj</button>
-      </div>`;
+      <div class="input-row"><input type="number" id="income${i}" placeholder="Indtjening (DKK)">
+      <button onclick="addIncome('${c.id}',${i})">Tilføj</button></div>`;
     cont.appendChild(div);
   });
 }
 
 function getLevel(c){
   if(c.manualLevel!=null) return LEVELS[c.manualLevel].name;
-  const inc=c.income;
+  const inc = c.income || 0;
   if(inc<100000) return LEVELS[0].name;
   if(inc<250000) return LEVELS[1].name;
   if(inc<500000) return LEVELS[2].name;
   return LEVELS[3].name;
 }
 
-function addIncome(id){
-  const val=parseFloat(document.getElementById(`income${id}`).value);
-  if(isNaN(val)||val<=0) return;
-  const docRef = companiesCol.doc(id);
-  docRef.update({
-    income: firebase.firestore.FieldValue.increment(val),
-    manualLevel: null
-  });
+async function addIncome(id,i){
+  const v = parseFloat(document.getElementById(`income${i}`).value);
+  if(isNaN(v)||v<=0) return;
+  const c = doc(db,"companies",id);
+  const company = companies.find(c=>c.id===id);
+  await updateDoc(c,{income: (company.income||0)+v, manualLevel:null});
 }
 
-function changeLevel(id,d){
-  if(currentRole!=="admin") return;
-  const docRef = companiesCol.doc(id);
-  const c = companies.find(x=>x.id===id);
-  let newLevel = (c.manualLevel||0)+d;
-  if(newLevel<0) newLevel=0;
-  if(newLevel>3) newLevel=3;
-  docRef.update({ manualLevel: newLevel });
+async function changeLevel(id,d){
+  const c = companies.find(c=>c.id===id);
+  if(!c) return;
+  let ml = (c.manualLevel||0)+d;
+  if(ml<0) ml=0;
+  if(ml>3) ml=3;
+  await updateDoc(doc(db,"companies",id),{manualLevel: ml});
 }
 
-function del(id){
-  if(currentRole!=="admin") return;
-  companiesCol.doc(id).delete();
+async function delCompany(id){
+  await deleteDoc(doc(db,"companies",id));
 }
 
-document.getElementById("createCompanyBtn").onclick=()=>{
+// --- CREATE COMPANY ---
+document.getElementById("createCompanyBtn").onclick=async ()=>{
   const n=document.getElementById("companyName").value.trim();
   const c=document.getElementById("cvr").value.trim();
   const o=document.getElementById("owner").value.trim();
   if(!n||!c||!o) return;
-  companiesCol.add({name:n,cvr:c,owner:o,income:0,manualLevel:null});
+  await setDoc(doc(companiesRef),{name:n,cvr:c,owner:o,income:0,manualLevel:null});
   document.getElementById("companyName").value="";
   document.getElementById("cvr").value="";
   document.getElementById("owner").value="";
 };
 
-// --- MANDAG RESET ---
-function resetIfMonday(){
-  const t=new Date(), last=new Date(localStorage.getItem("lastReset")||0);
-  if(t.getDay()===1 && t.toDateString()!==last.toDateString()){
-    companies.forEach(c=>companiesCol.doc(c.id).update({income:0,manualLevel:null}));
-    localStorage.setItem("lastReset",t.toDateString());
-  }
-}
+// --- Admin passwords ---
+document.getElementById("changeAdminBtn").onclick=()=>{
+  const val=document.getElementById("newAdminPassword").value.trim();
+  if(val){ADMIN_PASS=val; localStorage.setItem("adminPassword",val);}
+};
+document.getElementById("changeUserBtn").onclick=()=>{
+  const val=document.getElementById("newUserPassword").value.trim();
+  if(val){USER_PASS=val; localStorage.setItem("userPassword",val);}
+};
 
-// --- TIMER ---
+// --- TIMER & MANDAG RESET ---
 function updateTimer(){
   const now=new Date();
   const next=new Date(now);
@@ -238,37 +334,34 @@ function updateTimer(){
   const m=Math.floor(diff/60000)%60;
   document.getElementById("timer").textContent=`Til næste mandag: ${d}d ${h}h ${m}m`;
 }
-
 setInterval(updateTimer,60000);
 updateTimer();
-resetIfMonday();
 
-// --- LISTENERS ---
+async function resetIfMonday(){
+  const t=new Date();
+  const last = new Date(localStorage.getItem("lastReset")||0);
+  if(t.getDay()===1 && t.toDateString()!==last.toDateString()){
+    for(const c of companies){
+      await updateDoc(doc(db,"companies",c.id),{income:0,manualLevel:null});
+    }
+    localStorage.setItem("lastReset",t.toDateString());
+  }
+}
+
+// --- EVENTS ---
 document.getElementById("loginBtn").onclick=login;
 document.getElementById("logoutBtn").onclick=logout;
 document.getElementById("createBtn").onclick=()=>showSection("createCompany");
-document.getElementById("listBtn").onclick=()=>showSection("companyList");
+document.getElementById("listBtn").onclick=()=>{showSection("companyList"); renderCompanies();};
 document.getElementById("backFromListBtn").onclick=()=>showSection("mainMenu");
 document.getElementById("refreshListBtn").onclick=renderCompanies;
 document.getElementById("backFromCreateBtn").onclick=()=>showSection("mainMenu");
 document.getElementById("adminBtn").onclick=()=>showSection("adminPanel");
 document.getElementById("adminBackBtn").onclick=()=>showSection("mainMenu");
 
-document.getElementById("changeAdminBtn").onclick=()=>{
-  const val=document.getElementById("newAdminPassword").value.trim();
-  if(val){ADMIN_PASS=val; localStorage.setItem("adminPassword",val);}
-};
-document.getElementById("changeUserBtn").onclick=()=>{
-  const val=document.getElementById("newUserPassword").value.trim();
-  if(val){USER_PASS=val; localStorage.setItem("userPassword",val);}
-};
-
-// --- REALTIME FIRESTORE LISTENER ---
-companiesCol.onSnapshot(snapshot=>{
-  companies=[];
-  snapshot.forEach(doc=>companies.push({...doc.data(),id:doc.id}));
-  renderCompanies();
-});
+// --- INITIAL ---
+fetchCompanies();
+resetIfMonday();
 </script>
 </body>
 </html>
